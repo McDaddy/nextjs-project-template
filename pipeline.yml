@@ -1,0 +1,71 @@
+version: "1.1"
+stages:
+  - stage:
+      - git-checkout:
+          alias: git-checkout
+          description: 代码仓库克隆
+          params:
+            depth: 1
+  - stage:
+      - js-build:
+          alias: build-xdp-ui
+          description: 针对 nodejs 工程的编译打包任务
+          version: "1.0"
+          params:
+            build_cmd:
+              - npm ci
+              - npm run build
+            node_version: 12
+            workdir: ${git-checkout}
+          resources:
+            cpu: 2
+            mem: 6144
+  - stage:
+      - dockerfile:
+          alias: build-xdp-ui-image
+          description: 针对自定义 dockerfile 打包，产出可运行镜像
+          version: "1.0"
+          params:
+            path: local_Dockerfile
+            workdir: ${build-xdp-ui}
+          loop:
+            break: task_status == 'Success'
+            strategy:
+              max_times: 5
+              decline_ratio: 2
+              decline_limit_sec: 60
+              interval_sec: 5
+          resources:
+            cpu: 2
+            mem: 6144
+  - stage:
+      - custom-script:
+          alias: docker-push
+          description: 运行自定义命令
+          image: docker
+          commands:
+            - echo "http://mirrors.aliyun.com/alpine/v3.6/main/" > /etc/apk/repositories && echo "http://mirrors.aliyun.com/alpine/v3.6/community/" >> /etc/apk/repositories
+            - time=`date +%s%6N`
+            - commit='${{ outputs.git-checkout.commit }}'
+            - repo='registry.erda.cloud/erda/erda-xdp-ui:'((dice.version))'-'((date.YYYYMMDD))'-'"$commit"
+            - docker pull ${{ outputs.build-xdp-ui-image.image }}
+            - docker tag ${{ outputs.build-xdp-ui-image.image }} $repo
+            - docker login registry.cn-hangzhou.aliyuncs.com/dice -u=((dockerUsername)) -p=((dockerPassword))
+            - docker push $repo
+            - echo "image=$repo" >> $METAFILE
+  - stage:
+      - release:
+          alias: release
+          description: 用于打包完成时，向dicehub 提交完整可部署的dice.yml。用户若没在pipeline.yml里定义该action，CI会自动在pipeline.yml里插入该action
+          params:
+            dice_yml: ${git-checkout}/dice.yml
+            image:
+              dice-xdp-ui: ${docker-push:OUTPUT:image}
+  - stage:
+      - dice:
+          alias: dice
+          description: 用于 dice 平台部署应用服务
+          version: "1.0"
+          params:
+            release_id_path: ${release}
+            time_out: 43200

@@ -1,0 +1,59 @@
+{
+  "name": "@erda-ui/cdp-ui",
+  "version": "1.0.0",
+  "description": "erda cdp ui",
+  "private": true,
+  "scripts": {
+    "prepare": "husky install",
+    "f2elint-scan": "f2elint scan",
+    "f2elint-fix": "f2elint fix",
+    "precommit": "lint-staged",
+    "clear": "lerna clean -y && rm -r -f ./node_modules",
+    "start": "next dev",
+    "build": "next build"
+  },
+  "keywords": [],
+  "author": "Erda-FE",
+  "license": "AGPL",
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  },
+  "dependencies": {
+    "antd": "^4.16.13",
+    "axios": "^0.21.3",
+    "cube-state": "^1.5.5",
+    "js-cookie": "^3.0.1",
+    "less": "^4.1.1",
+    "lodash": "^4.17.21",
+    "next": "~11.1.2",
+    "path-to-regexp": "^6.2.0",
+    "query-string": "^7.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-use": "^17.3.1",
+    "tailwindcss": "^2.2.9"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@types/lodash": "^4.14.172",
+    "@types/react": "^17.0.19",
+    "autoprefixer": "^10.3.4",
+    "babel-plugin-import": "^1.13.3",
+    "commitizen": "^4.2.4",
+    "cz-customizable": "^6.3.0",
+    "dotenv": "^10.0.0",
+    "f2elint": "^1.2.0",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
+    "next-plugin-antd-less": "^1.4.2",
+    "prettier": "^2.3.2",
+    "stylelint-config-ali": "^0.4.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ]
+}

@@ -1,0 +1,32 @@
+version: "2.0"
+meta:
+  ERDA_COMPONENT: ""
+values:
+  production:
+    replicas: 2
+    request_cpu: 0.2
+    request_mem: 256
+services:
+  ui:
+    ports:
+    - 80
+    envs:
+      OPENAPI_ADDR: "openapi:9529"
+      UC_ADDR: "uc:8080"
+      SCHEDULER_ADDR: "scheduler:9091"
+    resources:
+      cpu: ${request_cpu:0.2}
+      max_cpu: 0.2
+      mem: ${request_mem:256}
+      max_mem: 256
+      network:
+        mode: "container"
+    deployments:
+      replicas: ${replicas:1}
+    expose:
+    - 80
+    health_check:
+      http:
+        port: 80
+        path: "/"
+        duration: 120

@@ -1,0 +1,7 @@
+.pnpm-debug.log
+lerna-debug.log
+**/node_modules/*
+.next/
+tsconfig.tsbuildinfo
+.eslintcache
+.env
