@@ -19,11 +19,11 @@ import { Button, Input } from 'antd';
 import Image from 'next/image';
 import { useUpdate } from 'src/common/utils';
 
-interface HomePageProps {
+interface IProps {
   a: string;
 }
 
-const Home: NextPage<HomePageProps> = () => {
+const Demo: NextPage<IProps> = () => {
   const [state, setState] = React.useState('');
   const [{ a }, updater] = useUpdate({
     a: 2,
@@ -31,7 +31,8 @@ const Home: NextPage<HomePageProps> = () => {
 
   return (
     <div className="h-full p-10">
-      <Input className="w-full h-full color-red" value={state} onChange={(e) => setState(e.target.value)} />
+      <p>This is demo page</p>
+      <Input className="w-full color-red" value={state} onChange={(e) => setState(e.target.value)} />
       <div>{a}</div>
 
       <div>
@@ -42,4 +43,4 @@ const Home: NextPage<HomePageProps> = () => {
   );
 };
 
-export default Home;
+export default Demo;

@@ -21,15 +21,15 @@ module.exports = () => {
       // Will only be available on the server side
       OPENAPI_ADDR: process.env.OPENAPI_ADDR, // Pass through env variables
     },
-    // async redirects() {
-    //   return [
-    //     {
-    //       source: '/',
-    //       destination: '/your-home', // Matched parameters can be used in the destination
-    //       permanent: false,
-    //     },
-    //   ];
-    // },
+    async redirects() {
+      return [
+        {
+          source: '/',
+          destination: '/demo', // Matched parameters can be used in the destination
+          permanent: false,
+        },
+      ];
+    },
   });
 
   return nextConfig;

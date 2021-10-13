@@ -2,6 +2,7 @@ import { set } from 'lodash';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import errorHandler from '../error-handler';
+import { downloadFileAxios } from '.';
 
 let initialized = false;
 
@@ -19,7 +20,6 @@ export const initAxios = () => {
           headers['OPENAPI-CSRF-TOKEN'] = token;
         }
       }
-
       const cancelToken = axios.CancelToken.source();
       set(config, 'cancelToken', cancelToken.token);
       return config;
@@ -32,6 +32,9 @@ export const initAxios = () => {
   // interceptor response
   axios.interceptors.response.use(
     (response) => {
+      if (response.config.responseType === 'blob') {
+        downloadFileAxios(response);
+      }
       return response;
     },
     async (error) => {

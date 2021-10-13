@@ -1,18 +1,3 @@
-/*
- * Copyright (c) 2021 Terminus, Inc.
- *
- * This program is free software: you can use, redistribute, and/or modify
- * it under the terms of the GNU Affero General Public License, version 3
- * or later ("AGPL"), as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { createStore } from '../store/cube';
@@ -20,7 +5,6 @@ import { isObject } from 'lodash';
 import axios, { Method } from 'axios';
 import { Key, pathToRegexp, compile } from 'path-to-regexp';
 import qs from 'query-string';
-// import { IUserInfo, setUserMap } from '../stores/user-map';
 import { getConfig } from '../store/config';
 
 const DEFAULT_PAGE_SIZE = 15;
@@ -101,6 +85,7 @@ export const genRequest = function <T extends FN>(apiConfig: APIConfig) {
     const { $options, $headers, $body, ...rest } = params || {};
     const { bodyOrQuery, pathParams } = extractPathParams(path, rest);
     const { isDownload, uploadFileKey } = $options || {};
+    let getParams = bodyOrQuery;
     if ('pageNo' in bodyOrQuery && !('pageSize' in bodyOrQuery)) {
       bodyOrQuery.pageSize = DEFAULT_PAGE_SIZE;
     }
@@ -109,6 +94,7 @@ export const genRequest = function <T extends FN>(apiConfig: APIConfig) {
       if (Object.keys(bodyOrQuery).length) {
         bodyData = uploadFileKey ? bodyOrQuery[uploadFileKey] : bodyOrQuery;
       }
+      getParams = {};
     } else if (method === 'delete') {
       bodyData = $body;
     }
@@ -116,7 +102,7 @@ export const genRequest = function <T extends FN>(apiConfig: APIConfig) {
       method: method as Method,
       url: generatePath(path, pathParams),
       headers: headers ?? $headers,
-      params: bodyOrQuery,
+      params: getParams,
       paramsSerializer: (p: Obj<string>) => qs.stringify(p),
       responseType: isDownload ? 'blob' : 'json',
       data: bodyData,
@@ -176,6 +162,7 @@ export interface APIConfig {
   api: string;
   successMsg?: string;
   errorMsg?: string;
+  useFormErrorMsg?: boolean;
   globalKey?: string;
   headers?: Obj<string>;
 }
@@ -185,6 +172,7 @@ export function enhanceAPI<T extends FN>(apiFn: T, config?: APIConfig) {
 
   let _toggleLoading: undefined | ((p: boolean) => void);
   let _setData: undefined | Function;
+  let loadMoreDataList: any[] = [];
 
   const onResponse = (body: PICK_BODY<T>, params?: Parameters<T>[0]) => {
     // standard response
@@ -208,7 +196,7 @@ export function enhanceAPI<T extends FN>(apiFn: T, config?: APIConfig) {
         successMsg && getConfig('onAPISuccess')?.(successMsg);
       } else if (err) {
         const errorMsg = err?.msg || params?.$options?.errorMsg || config?.errorMsg;
-        errorMsg && getConfig('onAPIFail')?.('error', errorMsg);
+        errorMsg && !config?.useFormErrorMsg && getConfig('onAPIFail')?.(errorMsg);
       }
     }
   };
@@ -232,6 +220,24 @@ export function enhanceAPI<T extends FN>(apiFn: T, config?: APIConfig) {
           _toggleLoading?.(false);
         });
     },
+
+    fetchPagingLoadMore: (params?: Parameters<T>[0]): ReturnType<T> => {
+      _toggleLoading?.(true);
+      return apiFn(params)
+        .then((body: Omit<PICK_BODY<T>, 'data'> & { data: NormalOrPagingData<PagingData> }) => {
+          onResponse(body as PICK_BODY<T>, params);
+          loadMoreDataList = params?.pageNo !== 1 ? [...loadMoreDataList, ...body?.data?.list] : body?.data?.list;
+          _setData?.({
+            ...body?.data,
+            list: loadMoreDataList,
+          });
+          return body;
+        })
+        .finally(() => {
+          _toggleLoading?.(false);
+        });
+    },
+
     useData: (): PICK_DATA<T> | null => {
       const [data, setData] = React.useState(null);
 
@@ -279,7 +285,7 @@ export function enhanceAPI<T extends FN>(apiFn: T, config?: APIConfig) {
 
 export function apiCreator<T extends FN>(apiConfig: APIConfig) {
   const apiFn = genRequest<T>(apiConfig);
-  return enhanceAPI<typeof apiFn>(apiFn);
+  return enhanceAPI<typeof apiFn>(apiFn, apiConfig);
 }
 
 export { axios };

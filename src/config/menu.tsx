@@ -17,24 +17,13 @@ interface MenuItem {
 
 export const menuConfig: MenuItem[] = [
   {
-    key: 'tag',
-    label: '标签市场',
+    key: 'demo',
+    label: 'DEMO市场',
     icon: <ErdaIcon type="flag" {...iconProps} />,
     subMenus: [
       {
-        label: '标签首页',
-        href: '/tag',
-      },
-    ],
-  },
-  {
-    key: 'group',
-    label: '人群管理',
-    icon: <ErdaIcon type="people" {...iconProps} />,
-    subMenus: [
-      {
-        label: '人群首页',
-        href: '/group',
+        label: 'DEMO首页',
+        href: '/demo',
       },
     ],
   },
