@@ -7,13 +7,9 @@ values:
     request_cpu: 0.2
     request_mem: 256
 services:
-  ui:
+  custom-app-ui: # your app name
     ports:
     - 80
-    envs:
-      OPENAPI_ADDR: "openapi:9529"
-      UC_ADDR: "uc:8080"
-      SCHEDULER_ADDR: "scheduler:9091"
     resources:
       cpu: ${request_cpu:0.2}
       max_cpu: 0.2
@@ -25,8 +21,3 @@ services:
       replicas: ${replicas:1}
     expose:
     - 80
-    health_check:
-      http:
-        port: 80
-        path: "/"
-        duration: 120
