@@ -1,30 +1,35 @@
 const ESLintPlugin = require('eslint-webpack-plugin');
 const withAntdLess = require('next-plugin-antd-less');
-const dotenv = require('dotenv');
 const path = require('path');
 
 module.exports = () => {
-  const { parsed: envFileConfig } = dotenv.config({ path: path.resolve(__dirname, '.env') });
-
   const nextConfig = withAntdLess({
     modifyVars: { '@primary-color': '#6a549e' },
     lessVarsFilePathAppendToEndOfContent: false,
     images: {
       disableStaticImages: true,
     },
+    sassOptions: {
+      includePaths: [path.join(__dirname, 'src', 'styles')],
+    },
     webpack: (config) => {
       // Important: return the modified config
       config.plugins.push(new ESLintPlugin({ extensions: ['ts', 'tsx'], failOnError: false }));
       return config;
     },
-    rewrites: async () => {
-      return [
-        {
-          source: '/api/:path*',
-          destination: `${envFileConfig.BACKEND_URL}/api/:path*`,
-        },
-      ];
+    serverRuntimeConfig: {
+      // Will only be available on the server side
+      OPENAPI_ADDR: process.env.OPENAPI_ADDR, // Pass through env variables
     },
+    // async redirects() {
+    //   return [
+    //     {
+    //       source: '/',
+    //       destination: '/your-home', // Matched parameters can be used in the destination
+    //       permanent: false,
+    //     },
+    //   ];
+    // },
   });
 
   return nextConfig;
