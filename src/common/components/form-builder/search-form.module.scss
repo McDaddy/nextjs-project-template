@@ -1,0 +1,15 @@
+.erda-search-form {
+  :global {
+    .ant-form-item {
+      margin: 0;
+    }
+
+    .ant-form-item-label {
+      padding: 0;
+    }
+
+    .ant-row {
+      row-gap: 0 !important ;
+    }
+  }
+}

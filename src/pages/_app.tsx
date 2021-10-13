@@ -1,37 +1,63 @@
-/*
- * Copyright (c) 2021 Terminus, Inc.
- *
- * This program is free software: you can use, redistribute, and/or modify
- * it under the terms of the GNU Affero General Public License, version 3
- * or later ("AGPL"), as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
+/* eslint-disable react/no-danger */
 import { PageLayout } from '../layout/page-layout';
-import App, { AppProps, AppContext } from 'next/app';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
 import { initAxios } from 'src/common/utils/axios-config';
+import ErrorBoundary from 'src/common/components/error-boundary';
+import { IconProvider, DEFAULT_ICON_CONFIGS } from '@icon-park/react';
+import { ConfigProvider, message } from 'antd';
+import '../styles/antd-extension.scss';
 import 'tailwindcss/tailwind.css';
+import zhCN from 'antd/lib/locale/zh_CN';
+import { setConfig } from 'src/common/store/config';
 
 initAxios();
 
+setConfig('onAPISuccess', message.success);
+setConfig('onAPIFail', message.error);
+
+const iconConfig = {
+  ...DEFAULT_ICON_CONFIGS,
+  prefix: 'cdp', // app name
+};
+
 const CustomApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <PageLayout>
-      <Component {...pageProps} />
-    </PageLayout>
+    <>
+      <Head>
+        <title>Custom Erda App</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="shortcut icon" href="/images/favicon.png" />
+        {/* insert icon-park link here */}
+        <script src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_3408_42.5d117228040ba154d50f30a51d63891a.es5.js" />
+        {process.env.NODE_ENV !== 'production' && process.env.DISABLE_ERROR_OVERLAY === 'true' && (
+          <script dangerouslySetInnerHTML={{ __html: noOverlayWorkaroundScript }} />
+        )}
+      </Head>
+      <IconProvider value={iconConfig}>
+        <ConfigProvider
+          locale={zhCN}
+          getPopupContainer={(trigger: HTMLElement) => trigger?.parentElement || document.body}
+        >
+          <PageLayout>
+            <ErrorBoundary>
+              <Component {...pageProps} />
+            </ErrorBoundary>
+          </PageLayout>
+        </ConfigProvider>
+      </IconProvider>
+    </>
   );
 };
 
-// This disables the ability to perform automatic static optimization, causing every page in your app to be server-side rendered.
-CustomApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
-  return { ...appProps };
-};
+const noOverlayWorkaroundScript = `
+  window.addEventListener('error', event => {
+    event.stopImmediatePropagation()
+  })
+
+  window.addEventListener('unhandledrejection', event => {
+    event.stopImmediatePropagation()
+  })
+`;
 
 export default CustomApp;

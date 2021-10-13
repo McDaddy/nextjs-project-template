@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 20</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="24" height="24" rx="4"></rect>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#722ED1" offset="0%"></stop>
+            <stop stop-color="#733ED1" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="-5.12784259e-13%" x2="100%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#F9F0FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#E8D7F4" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#D3ADF7" offset="0%"></stop>
+            <stop stop-color="#D3ADF7" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-6">
+            <stop stop-color="#22075E" offset="0%"></stop>
+            <stop stop-color="#722ED1" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="标签管理" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-20.000000, -24.000000)">
+            <g id="路径-6-+-路径-7-+-路径-6备份-+-路径-8-蒙版" transform="translate(20.000000, 24.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="蒙版"></g>
+                <polygon id="路径-6" fill="url(#linearGradient-3)" mask="url(#mask-2)" points="7.87926956e-18 0 3.2658171e-16 24 24 0"></polygon>
+                <polygon id="路径-7" fill="url(#linearGradient-4)" mask="url(#mask-2)" points="24 0 12 24 24 24"></polygon>
+                <polygon id="路径-6备份" fill="url(#linearGradient-5)" mask="url(#mask-2)" transform="translate(12.000000, 12.000000) scale(1, -1) translate(-12.000000, -12.000000) " points="0 0 24 24 12 1.11889664e-15"></polygon>
+                <polygon id="路径-8" fill="url(#linearGradient-6)" mask="url(#mask-2)" points="2.66018418e-15 0 5.57366653e-15 12 24 0"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

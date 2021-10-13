@@ -1,4 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+declare namespace JSX {
+  interface IntrinsicElements {
+    'iconpark-icon': any;
+  }
+}
+
+declare module '*.scss';
 
 interface Obj<T = any> {
   [k: string]: T;
@@ -43,4 +50,26 @@ interface IPagingRequest {
 interface IPagingData<T> {
   list: T[];
   paging: IPaging;
+}
+
+interface RAW_RESPONSE<T = any> {
+  data: T;
+  err: {
+    code: string;
+    msg: string;
+  } | null;
+  success: boolean;
+  userInfo?: Array<{
+    id: string;
+    name: string;
+    nickname: string;
+  }>;
+  userIDs?: string[];
+}
+
+type Nullable<T> = T | null;
+
+declare module '*.module.scss' {
+  const classes: { readonly [key: string]: string };
+  export default classes;
 }
