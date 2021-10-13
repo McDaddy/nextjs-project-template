@@ -1,106 +1,98 @@
-// Copyright (c) 2021 Terminus, Inc.
-//
-// This program is free software: you can use, redistribute, and/or modify
-// it under the terms of the GNU Affero General Public License, version 3
-// or later ("AGPL"), as published by the Free Software Foundation.
-//
-// This program is distributed in the hope that it will be useful, but WITHOUT
-// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-// FITNESS FOR A PARTICULAR PURPOSE.
-//
-// You should have received a copy of the GNU Affero General Public License
-// along with this program. If not, see <http://www.gnu.org/licenses/>.
-
-// const path = require('path');
 const plugin = require('tailwindcss/plugin');
 
 module.exports = {
-  important: true,
+  mode: 'jit',
   darkMode: false, // or 'media' or 'class'
   corePlugins: {
     preflight: false,
-    container: false,
   },
   theme: {
     extend: {
-      borderRadius: {
-        DEFAULT: '3px',
-      },
-      borderColor: (theme) => ({ ...theme('colors'), normal: '#00000019' }),
       colors: {
-        primary: '#6a549e',
-        normal: '#000000cc', // color-dark-8: rgba(0, 0, 0, .8)
-        sub: '#00000099', // color-dark-6: rgba(0, 0, 0, .6)
-        // desc: '#0000007f', // color-dark-5: rgba(0, 0, 0, .5)
-        desc: '#00000066', // color-dark-4: rgba(0, 0, 0, .4)
-        icon: '#00000066', // color-dark-3: rgba(0, 0, 0, .3)
-        disabled: '#00000066', // color-dark-3: rgba(0, 0, 0, .3)
-        holder: '#00000033', // color-dark-3: rgba(0, 0, 0, .2)
-        red: '#df3409',
-        danger: '#df3409',
-        blue: '#0567ff',
-        info: '#0567ff',
-        yellow: '#feab00',
-        warning: '#feab00',
-        green: '#34b37e',
-        success: '#34b37e',
-        orange: '#f47201',
-        purple: '#6a549e',
-        cyan: '#5bd6d0ff',
-        gray: '#666666',
-        darkgray: '#999999',
-        grey: '#f5f5f5',
-        layout: '#f0eef5',
-        white: '#ffffff',
-        'light-primary': '#6a549e19', // rgba($primary, .1)
-        'shallow-primary': '#6a549e99', // rgba($primary, .6)
-        'light-gray': '#bbbbbb',
-        'dark-8': '#000000cc',
-        'dark-6': '#00000066',
-        'dark-2': '#00000033',
-        'dark-1': '#00000019',
-        'dark-04': '#0000000a',
-        'dark-02': '#00000005',
-        'white-8': '#ffffffcc',
-        'log-font': '#c2c1d0',
-        'log-bg': '#3c444f',
-        'light-active': '#6a549e0f', // rgba($primary, .06)
-      },
-      flex: {
-        2: '2 2 0%',
-        3: '3 3 0%',
-        4: '4 4 0%',
-        5: '5 5 0%',
-        6: '6 6 0%',
-        7: '7 7 0%',
-        8: '8 8 0%',
+        primary: {
+          DEFAULT: '#722ED1',
+          900: '#22075E',
+          300: '#D3ADF7',
+          100: '#F9F0FF',
+        },
+        error: '#F5222D',
+        warning: '#FAAD14',
+        success: '#52C41A',
+        red: '#F5222D',
+        yellow: '#FAAD14',
+        purple: {
+          DEFAULT: '#722ED1',
+          900: '#22075E',
+          300: '#D3ADF7',
+          100: '#F9F0FF',
+          '100-transparent': '#F9F0FF00',
+        },
+        blue: {
+          DEFAULT: '#1890FF',
+          900: '#003A8C',
+          300: '#91D5FF',
+          100: '#E6F7FF',
+        },
+        cyan: {
+          DEFAULT: '#13C2C2',
+          900: '#00474F',
+          300: '#87E8DE',
+          100: '#E6FFFB',
+        },
+        orange: {
+          DEFAULT: '#FA541C',
+          900: '#871400',
+          300: '#FFBB96',
+          100: '#FFF2E8',
+        },
+        green: {
+          DEFAULT: '#52C41A',
+          900: '#135200',
+          300: '#B7EB8F',
+          100: '#F6FFED',
+        },
+        dark: {
+          DEFAULT: '#111111',
+          1: '#333333',
+          2: '#626262',
+          3: '#929292',
+          4: '#D9D9D9',
+          5: '#ECECEC',
+          6: '#FCFCFC',
+        },
+        white: {
+          DEFAULT: '#FFFFFF',
+          1: '#DBDBDB',
+          2: '#A8A8A8',
+          3: '#757575',
+          4: '#D9D9D9',
+        },
       },
       fontFamily: {
         log: ['Menlo', 'PingFangSC-Regular', 'Consolas', 'Courier', 'monospace'],
       },
-      cursor: {
-        copy: 'copy',
-      },
-      opacity: {
-        6: '0.06',
-      },
-      minHeight: {
-        '1/4': '25%',
-        '1/2': '50%',
-        '3/5': '60%',
-        '3/4': '75%',
-      },
-      maxHeight: {
+      maxWidth: {
         '1/4': '25%',
         '1/2': '50%',
         '3/5': '60%',
         '3/4': '75%',
       },
       width: {
+        fit: 'fit-content',
+      },
+      height: {
         '1/10': '10%',
         '3/10': '30%',
         '7/10': '70%',
         '9/10': '90%',
+        fit: 'fit-content',
+      },
+      boxShadow: {
+        0.5: '0 2px 6px 0 rgba(0, 0, 0, 0.08)',
+        '0.5-y': '0 -2px 6px 0 rgba(0, 0, 0, 0.08)',
+        1: '0 4px 12px 0 rgba(0, 0, 0, 0.08)',
+        '1-y': '-4px 0 12px 0 rgba(0,0,0,0.08)',
+        2: '0 8px 24px 0 rgba(0, 0, 0, 0.08)',
       },
     },
   },
@@ -108,23 +100,14 @@ module.exports = {
     extend: {
       margin: ['first', 'last'],
       padding: ['first', 'last'],
+      backgroundColor: ['active'],
+      colors: ['active'],
+      boxShadow: ['active'],
     },
   },
   plugins: [
-    plugin(({ addVariant, e }) => {
-      addVariant('before', ({ modifySelectors, separator }) => {
-        modifySelectors(({ className }) => {
-          return `.${e(`before${separator}${className}`)}::before`;
-        });
-      });
-    }),
     plugin(({ addUtilities }) => {
       const newUtilities = {
-        '.nowrap': {
-          overflow: 'hidden',
-          'white-space': 'nowrap',
-          'text-overflow': 'ellipsis',
-        },
         '.not-allowed': {
           color: '#00000066',
           cursor: 'not-allowed',
@@ -145,25 +128,37 @@ module.exports = {
           'border-right': '1px solid #00000019',
         },
         '.border-dashed': {
-          border: '1px dashed #00000019',
+          borderStyle: 'dashed',
         },
       };
-      const contentUtilities = {
-        '.required': {
-          content: 'attr(data-required)',
-          color: '#f5222d',
-        },
-      };
-
       addUtilities(newUtilities, ['responsive', 'hover']);
-      addUtilities(contentUtilities, ['before']);
     }),
   ],
   purge: {
     enabled: process.env.NODE_ENV === 'production',
-    content: ['./**/*.tsx'],
-    options: {
-      safelist: [/red/, /blue/, /yellow/, /green/, /orange/, /gray/, /cyan/, /grey/, /white/, /purple/, /flex-\d/],
-    },
+    content: ['./src/**/*.tsx', './src/**/*.ts'],
+    safelist: [
+      'bg-red',
+      'bg-blue',
+      'bg-yellow',
+      'bg-green',
+      'bg-orange',
+      'bg-gray',
+      'bg-cyan',
+      'bg-white',
+      'bg-purple',
+      'bg-success',
+      'bg-blue-300',
+      'bg-orange-300',
+      'bg-dark-2',
+      'bg-green-300',
+      'bg-dark-4',
+      'bg-dark-5',
+      'grid-cols-1',
+      'grid-cols-2',
+      'grid-cols-3',
+      'grid-cols-4',
+      'grid-cols-5',
+    ],
   },
 };
