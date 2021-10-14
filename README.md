@@ -62,6 +62,10 @@ DISABLE_ERROR_OVERLAY=true // 是否需要隐藏Next特有的错误弹窗
 
 遵照[NextJs](https://nextjs.org/docs/basic-features/pages)的规则，页面路由需要按照文件夹的结构编写
 
+### 文件夹规范
+
+![image-20211014163551985](https://kuimo-markdown-pic.oss-cn-hangzhou.aliyuncs.com/image-20211014163551985.png)
+
 ### 路由
 
 需要获取路由参数
@@ -105,11 +109,15 @@ export default withRouter(Comp);
 - 如果遇到需要覆盖组件库样式时，可能需要添加`!`前缀来开启 important
 - 需要使用 scss 时，请书写 module 级别的 scss，在 demo 中有例子
 
+### API 调用
+
+参考 demo
+
 ### 代码提交
 
 **请注意**：
 
-- 本工程开启了`@typescript-eslint/no-explicit-any`，所以包含`any`的代码是会报 lint 错误且无法被提交的，必须 any 时请添加具体`@ts-ignore`
+- 本工程开启了`@typescript-eslint/no-explicit-any`，所有包含`any`的代码是会报 lint 错误且无法被提交的，必须 any 时请添加具体`@ts-ignore`
 - 提交代码前会自动检查 lint 以及跑 type check(tsc)，任何警告以上的问题都会导致提交失败
 - 无需考虑代码格式问题，提交前会自动由 Pritter 做代码格式化
 
@@ -124,4 +132,4 @@ export default withRouter(Comp);
 - erda.yml
 - pipeline.yml
 
-然后就可以在 erda 上一键部署了
+然后就可以在 erda 上一键部署了，最后**记得**在部署参数中添加后端地址配置
