@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { useUpdate } from 'src/common/utils';
 import { useMount } from 'react-use';
 import { Table } from 'src/common';
-import { getEntityList } from 'src/services/entity';
+import { getEntityList } from 'src/services/demo';
+import styles from './index.module.scss';
 
 const Demo: NextPage = () => {
   const [state, setState] = React.useState('');
@@ -20,7 +21,7 @@ const Demo: NextPage = () => {
   });
 
   return (
-    <div className="h-full p-10">
+    <div className={`${styles.demo} h-full p-10`}>
       <h1>This is demo page</h1>
       <div className="mb-4">
         <div>Input Demo</div>
