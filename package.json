@@ -8,7 +8,6 @@
     "f2elint-scan": "f2elint scan",
     "f2elint-fix": "f2elint fix",
     "precommit": "lint-staged",
-    "clear": "lerna clean -y && rm -r -f ./node_modules",
     "start": "next dev",
     "build": "next build"
   },
