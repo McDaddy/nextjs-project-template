@@ -1,44 +1,70 @@
-/*
- * Copyright (c) 2021 Terminus, Inc.
- *
- * This program is free software: you can use, redistribute, and/or modify
- * it under the terms of the GNU Affero General Public License, version 3
- * or later ("AGPL"), as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import React from 'react';
 import { NextPage } from 'next';
 import { Button, Input } from 'antd';
 import Image from 'next/image';
 import { useUpdate } from 'src/common/utils';
+import { useMount } from 'react-use';
+import { Table } from 'src/common';
+import { getEntityList } from 'src/services/entity';
 
-interface IProps {
-  a: string;
-}
-
-const Demo: NextPage<IProps> = () => {
+const Demo: NextPage = () => {
   const [state, setState] = React.useState('');
-  const [{ a }, updater] = useUpdate({
-    a: 2,
+  const [{ count }, updater] = useUpdate({
+    count: 1,
+  });
+
+  const [data, loading] = getEntityList.useState();
+
+  useMount(() => {
+    getEntityList.fetch({ pageNo: 1, pageSize: 10 });
   });
 
   return (
     <div className="h-full p-10">
-      <p>This is demo page</p>
-      <Input className="w-full color-red" value={state} onChange={(e) => setState(e.target.value)} />
-      <div>{a}</div>
-
-      <div>
-        <Button onClick={() => updater.a(a + 1)}>点击我</Button>
+      <h1>This is demo page</h1>
+      <div className="mb-4">
+        <div>Input Demo</div>
+        <Input className="!w-60" value={state} onChange={(e) => setState(e.target.value)} />
       </div>
-      <Image src="/code.jpg" alt="sss" width="800px" height="300px" />
+      <div className="mb-4">
+        <div className="mb-2">Current count: {count}</div>
+        <Button onClick={() => updater.count(count + 1)}>Click me to add count</Button>
+      </div>
+      <div className="mb-4">
+        <div>Image Demo</div>
+        <Image src="/code.jpg" alt="alt" width="240px" height="90px" />
+      </div>
+      <div>API Demo</div>
+      <Table
+        className="mt-3"
+        loading={loading}
+        rowKey="id"
+        columns={[
+          {
+            title: '实体名称',
+            dataIndex: 'modelName',
+          },
+          {
+            title: '实体Code',
+            dataIndex: 'modelKey',
+          },
+          {
+            title: '描述',
+            dataIndex: 'description',
+          },
+          {
+            title: '更新时间',
+            dataIndex: 'updatedAt',
+          },
+          {
+            title: '关联标签数量',
+            dataIndex: 'tagNumber',
+          },
+        ]}
+        // @ts-ignore type
+        dataSource={data?.data || []}
+        pagination={data?.paging}
+      />
     </div>
   );
 };
