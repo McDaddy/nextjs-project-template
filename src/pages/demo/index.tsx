@@ -33,7 +33,7 @@ const Demo: NextPage = () => {
       </div>
       <div className="mb-4">
         <div>Image Demo</div>
-        <Image src="/code.jpg" alt="alt" width="240px" height="90px" />
+        <Image src="/images/code.jpg" alt="alt" width="240px" height="90px" />
       </div>
       <div>API Demo</div>
       <Table
